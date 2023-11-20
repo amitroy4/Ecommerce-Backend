@@ -4,6 +4,7 @@ const passwordValidation = require("../helpers/passwordValidation")
 const User = require("../model/userSchema")
 const bcrypt = require('bcrypt');
 const nodemailer = require("nodemailer");
+const otpGenerator = require("otp-generator")
 
 let registrationController = async (req, res) => {
     let { name, email, password } = req.body
@@ -33,29 +34,34 @@ let registrationController = async (req, res) => {
 
             if (emailValidation(email) && passwordValidation(password)) {
                 bcrypt.hash(password, 10, async function (err, hash) {
+
+                    let otp = otpGenerator.generate(6, { upperCaseAlphabets: true, specialChars: false });
+                    console.log(otp);
                     // console.log(hash);
                     let user = new User({
                         name: name,
                         email: email,
-                        password: hash
+                        password: hash,
+                        otp: otp,
                     })
                     user.save()
 
-                    const transporter = nodemailer.createTransport({
-                        service:"gmail",
-                        auth: {
-                          // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-                          user: "amitroyrock6071@gmail.com",
-                          pass: "uyqs iuqm tldm amhe",
-                        },
-                      });
 
-                      const info = await transporter.sendMail({
+                    const transporter = nodemailer.createTransport({
+                        service: "gmail",
+                        auth: {
+                            // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+                            user: "amitroyrock6071@gmail.com",
+                            pass: "uyqs iuqm tldm amhe",
+                        },
+                    });
+
+                    const info = await transporter.sendMail({
                         from: 'amitroyrock6071@gmail.com', // sender address
                         to: "amitroyrock@gmail.com", // list of receivers
                         subject: "Verify Your Email", // Subject line
-                        html: "<b>Hello world?</b>", // html body
-                      });
+                        html: `'<b>Please verify by clicking this <a href="https://www.facebook.com/amitroy.ewu/">link</a> or OTP ${otp} </b>'`, // html body
+                    });
 
 
                     res.send(user)
