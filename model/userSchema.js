@@ -15,13 +15,18 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    otp:{
+    otp: {
         type: String,
         required: true,
     },
-    verify:{
+    verify: {
         type: Boolean,
         default: false,
+    },
+    role: {
+        type: String,
+        enum: ["Admin", "Merchant", "User"],
+        default: "User",
     }
 });
 
