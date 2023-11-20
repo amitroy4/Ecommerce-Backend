@@ -3,6 +3,7 @@ const passwordValidation = require("../helpers/passwordValidation")
 
 const User = require("../model/userSchema")
 const bcrypt = require('bcrypt');
+const nodemailer = require("nodemailer");
 
 let registrationController = async (req, res) => {
     let { name, email, password } = req.body
@@ -31,7 +32,7 @@ let registrationController = async (req, res) => {
             }
 
             if (emailValidation(email) && passwordValidation(password)) {
-                bcrypt.hash(password, 10, function (err, hash) {
+                bcrypt.hash(password, 10, async function (err, hash) {
                     // console.log(hash);
                     let user = new User({
                         name: name,
@@ -39,6 +40,24 @@ let registrationController = async (req, res) => {
                         password: hash
                     })
                     user.save()
+
+                    const transporter = nodemailer.createTransport({
+                        service:"gmail",
+                        auth: {
+                          // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+                          user: "amitroyrock6071@gmail.com",
+                          pass: "uyqs iuqm tldm amhe",
+                        },
+                      });
+
+                      const info = await transporter.sendMail({
+                        from: 'amitroyrock6071@gmail.com', // sender address
+                        to: "amitroyrock@gmail.com", // list of receivers
+                        subject: "Verify Your Email", // Subject line
+                        html: "<b>Hello world?</b>", // html body
+                      });
+
+
                     res.send(user)
                 });
 
