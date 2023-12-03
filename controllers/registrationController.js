@@ -2,7 +2,7 @@ const emailValidation = require("../helpers/emailValidation")
 const passwordValidation = require("../helpers/passwordValidation")
 
 const User = require("../model/userSchema")
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator")
 

@@ -1,5 +1,5 @@
 let User = require("../model/userSchema")
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 let loginController = async (req, res) => {
     let { email, password } = req.body
@@ -7,14 +7,14 @@ let loginController = async (req, res) => {
     // console.log(existingUser[0]);
     if (existingUser.length == 0) {
         res.send({ error: "credencial does not match" })
-    } else{
+    } else {
         bcrypt.compare(password, existingUser[0].password, function (err, result) {
-        //    console.log(result);
-           if(result){
-            res.send({ error: "login Successful" })
-           }else{
-            res.send({ error: "credencial does not match" })
-           }
+            //    console.log(result);
+            if (result) {
+                res.send({ error: "login Successful" })
+            } else {
+                res.send({ error: "credencial does not match" })
+            }
         });
     }
 }

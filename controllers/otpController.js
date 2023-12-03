@@ -6,7 +6,8 @@ let otpController = async (req, res) => {
     console.log(data[0].otp);
     if (data[0].otp == otp) {
         await User.findOneAndUpdate({ email: email }, { otp: "", verify: true })
-    }else{
+        res.send("OTP match")
+    } else {
         res.send("OTP does not match")
     }
 }
