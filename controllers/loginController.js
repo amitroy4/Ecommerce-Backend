@@ -1,5 +1,5 @@
 let User = require("../model/userSchema")
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 let loginController = async (req, res) => {
     let { email, password } = req.body
