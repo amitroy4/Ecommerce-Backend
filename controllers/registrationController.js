@@ -57,8 +57,8 @@ let registrationController = async (req, res) => {
                     });
 
                     const info = await transporter.sendMail({
-                        from: 'amitroyrock6071@gmail.com', // sender address
-                        to: "amitroyrock@gmail.com", // list of receivers
+                        from: process.env.BASE_EMAIL, // sender address
+                        to: email, // list of receivers
                         subject: "Verify Your Email", // Subject line
                         html: `'<b>Please verify by clicking this <a href="https://www.facebook.com/amitroy.ewu/">link</a> or OTP ${otp} </b>'`, // html body
                     });
